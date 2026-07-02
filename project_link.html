@@ -5,48 +5,47 @@
     <title>Project Submission — Lights Out Puzzle Simulator</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        @page { margin: 1in; size: A4; }
+        @page { margin: 1.2in; size: A4; }
         body {
             font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
             color: #1a1a2e;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 90vh;
+            min-height: 85vh;
             margin: 0;
             padding: 40px;
             background: #ffffff;
         }
         .card {
             text-align: center;
-            max-width: 600px;
+            max-width: 550px;
+            width: 100%;
         }
         h1 {
-            font-size: 26pt;
+            font-size: 24pt;
             font-weight: 800;
             margin-bottom: 6px;
-            line-height: 1.2;
+            color: #1a1a2e;
         }
         h1 span { color: #00b4d8; }
-        .subtitle {
-            font-size: 11pt;
-            color: #6b7280;
-            margin-bottom: 40px;
-        }
+        
         .line {
-            width: 60px;
+            width: 50px;
             height: 3px;
-            background: linear-gradient(90deg, #00b4d8, #7209b7);
+            background: #00b4d8;
             border-radius: 2px;
-            margin: 24px auto;
+            margin: 20px auto;
         }
+        
         .link-box {
-            display: inline-block;
-            margin: 30px 0;
-            padding: 18px 36px;
+            display: block;
+            margin: 30px auto;
+            padding: 20px;
             border: 2px solid #00b4d8;
             border-radius: 12px;
             background: #f0faff;
+            text-decoration: none;
         }
         .link-label {
             font-size: 9pt;
@@ -54,66 +53,64 @@
             letter-spacing: 0.1em;
             color: #6b7280;
             font-weight: 600;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
         .link-url {
-            font-size: 16pt;
+            font-size: 15pt;
             font-weight: 700;
             color: #00b4d8;
-            text-decoration: none;
             word-break: break-all;
         }
-        .meta {
-            margin-top: 36px;
-            font-size: 10.5pt;
-            color: #374151;
-            line-height: 2;
+        
+        .section-title {
+            font-size: 10pt;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #6b7280;
+            font-weight: 700;
+            margin-top: 30px;
+            margin-bottom: 12px;
         }
-        .meta strong { color: #1a1a2e; }
-        .tech-tags {
-            margin-top: 24px;
+        
+        .tech-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
             display: flex;
+            flex-direction: column;
             gap: 8px;
-            justify-content: center;
-            flex-wrap: wrap;
+            align-items: center;
         }
-        .tag {
-            padding: 4px 14px;
-            border-radius: 20px;
-            font-size: 9pt;
-            font-weight: 600;
-            border: 1.5px solid #00b4d8;
-            color: #00b4d8;
-            background: #edfaff;
+        
+        .tech-item {
+            font-size: 11pt;
+            color: #374151;
+            font-weight: 500;
+        }
+        .tech-item strong {
+            color: #1a1a2e;
         }
     </style>
 </head>
 <body>
     <div class="card">
-        <h1>Lights Out Puzzle <span>Simulator</span></h1>
-        <p class="subtitle">GF(2) Automated Solver & Procedural Generator</p>
-
+        <h1>Lights Out <span>Simulator</span></h1>
+        
         <div class="line"></div>
 
-        <div class="link-box">
+        <a class="link-box" href="https://github.com/lm10-2/lights-out-puzzle" target="_blank">
             <div class="link-label">GitHub Repository</div>
-            <a class="link-url" href="https://github.com/lm10-2/lights-out-puzzle">
-                github.com/lm10-2/lights-out-puzzle
-            </a>
-        </div>
+            <div class="link-url">github.com/lm10-2/lights-out-puzzle</div>
+        </a>
 
-        <div class="meta">
-            <strong>Author:</strong> lm10-2<br>
-            <strong>Language:</strong> HTML5 &bull; CSS3 &bull; JavaScript &nbsp;|&nbsp; <strong>Date:</strong> Jan 2026
-        </div>
-
-        <div class="tech-tags">
-            <span class="tag">GF(2) Galois Field</span>
-            <span class="tag">Gaussian Elimination</span>
-            <span class="tag">Matrix Rank Evaluation</span>
-            <span class="tag">Linear Algebra</span>
-            <span class="tag">Procedural Generation</span>
-        </div>
+        <div class="section-title">Things Used</div>
+        <ul class="tech-list">
+            <li class="tech-item"><strong>Languages:</strong> HTML5, CSS3, Vanilla JavaScript</li>
+            <li class="tech-item"><strong>Math Framework:</strong> Galois Field GF(2) Linear Algebra</li>
+            <li class="tech-item"><strong>Algorithm:</strong> O(N³) Gaussian Elimination Solver</li>
+            <li class="tech-item"><strong>Validation:</strong> Matrix Rank Solvability Pruning</li>
+            <li class="tech-item"><strong>Generation:</strong> Procedural Retrograde Puzzle Generator</li>
+        </ul>
     </div>
 </body>
 </html>
