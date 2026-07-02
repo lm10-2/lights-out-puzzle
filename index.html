@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Lights Out Puzzle Simulator with an automated GF(2) Gaussian Elimination solver engine. Play 3 difficulty tiers with procedurally generated, guaranteed-solvable puzzles.">
+    <title>Lights Out | GF(2) Puzzle Solver</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <canvas id="bg-canvas"></canvas>
+
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <div class="logo-icon">
+                    <div class="logo-grid">
+                        <span class="lg-cell on"></span><span class="lg-cell"></span><span class="lg-cell on"></span>
+                        <span class="lg-cell"></span><span class="lg-cell on"></span><span class="lg-cell"></span>
+                        <span class="lg-cell on"></span><span class="lg-cell"></span><span class="lg-cell on"></span>
+                    </div>
+                </div>
+                <div class="logo-text">
+                    <h1>Lights Out</h1>
+                    <span class="logo-subtitle">GF(2) Puzzle Solver</span>
+                </div>
+            </div>
+            <div class="header-stats">
+                <div class="stat-chip" id="stat-moves">
+                    <span class="stat-icon">⬡</span>
+                    <span class="stat-label">Moves</span>
+                    <span class="stat-value" id="move-count">0</span>
+                </div>
+                <div class="stat-chip" id="stat-lights">
+                    <span class="stat-icon">◉</span>
+                    <span class="stat-label">Lights</span>
+                    <span class="stat-value" id="light-count">0</span>
+                </div>
+                <div class="stat-chip" id="stat-time">
+                    <span class="stat-icon">◷</span>
+                    <span class="stat-label">Time</span>
+                    <span class="stat-value" id="time-display">0:00</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Left Panel: Controls -->
+            <aside class="panel panel-left">
+                <div class="panel-section">
+                    <h2 class="panel-title">Difficulty</h2>
+                    <div class="difficulty-selector">
+                        <button class="diff-btn active" data-difficulty="easy" id="btn-easy">
+                            <span class="diff-icon">◇</span>
+                            <span class="diff-name">Easy</span>
+                            <span class="diff-desc">3-5 clicks</span>
+                        </button>
+                        <button class="diff-btn" data-difficulty="medium" id="btn-medium">
+                            <span class="diff-icon">◆</span>
+                            <span class="diff-name">Medium</span>
+                            <span class="diff-desc">8-12 clicks</span>
+                        </button>
+                        <button class="diff-btn" data-difficulty="hard" id="btn-hard">
+                            <span class="diff-icon">⬢</span>
+                            <span class="diff-name">Hard</span>
+                            <span class="diff-desc">15-20 clicks</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="panel-section">
+                    <h2 class="panel-title">Actions</h2>
+                    <div class="action-buttons">
+                        <button class="action-btn primary" id="btn-new-game">
+                            <span class="btn-icon">↻</span> New Puzzle
+                        </button>
+                        <button class="action-btn solver" id="btn-solve">
+                            <span class="btn-icon">⚡</span> Auto Solve
+                        </button>
+                        <button class="action-btn hint" id="btn-hint">
+                            <span class="btn-icon">💡</span> Show Hint
+                        </button>
+                        <button class="action-btn secondary" id="btn-reset">
+                            <span class="btn-icon">⟲</span> Reset Board
+                        </button>
+                    </div>
+                </div>
+
+                <div class="panel-section">
+                    <h2 class="panel-title">How to Play</h2>
+                    <div class="rules-box">
+                        <p>Click a cell to toggle it and its <strong>4 neighbors</strong>.</p>
+                        <p>Turn <strong>all lights off</strong> to win!</p>
+                        <p>Use <strong>Auto Solve</strong> for the GF(2) Gaussian Elimination solution.</p>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Center: Game Board -->
+            <section class="game-area">
+                <div class="board-wrapper">
+                    <div class="board-glow"></div>
+                    <div class="game-board" id="game-board">
+                        <!-- 25 cells generated by JS -->
+                    </div>
+                </div>
+                <div class="win-overlay" id="win-overlay">
+                    <div class="win-content">
+                        <div class="win-icon">✦</div>
+                        <h2>Puzzle Solved!</h2>
+                        <p id="win-stats"></p>
+                        <button class="action-btn primary" id="btn-play-again">
+                            <span class="btn-icon">↻</span> Play Again
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Right Panel: Solver Info -->
+            <aside class="panel panel-right">
+                <div class="panel-section">
+                    <h2 class="panel-title">Solver Engine</h2>
+                    <div class="solver-info">
+                        <div class="solver-stat">
+                            <span class="solver-label">Algorithm</span>
+                            <span class="solver-value">Gauss Elim · GF(2)</span>
+                        </div>
+                        <div class="solver-stat">
+                            <span class="solver-label">Matrix Size</span>
+                            <span class="solver-value">25 × 25</span>
+                        </div>
+                        <div class="solver-stat">
+                            <span class="solver-label">Matrix Rank</span>
+                            <span class="solver-value" id="matrix-rank">—</span>
+                        </div>
+                        <div class="solver-stat">
+                            <span class="solver-label">Solvable</span>
+                            <span class="solver-value" id="solvable-status">—</span>
+                        </div>
+                        <div class="solver-stat">
+                            <span class="solver-label">Min Clicks</span>
+                            <span class="solver-value" id="min-clicks">—</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-section">
+                    <h2 class="panel-title">Solution Matrix</h2>
+                    <div class="solution-grid-wrapper">
+                        <div class="solution-grid" id="solution-grid">
+                            <!-- 25 mini cells generated by JS -->
+                        </div>
+                    </div>
+                    <p class="solution-legend">
+                        <span class="legend-item"><span class="legend-dot click"></span> Click here</span>
+                        <span class="legend-item"><span class="legend-dot skip"></span> Skip</span>
+                    </p>
+                </div>
+
+                <div class="panel-section">
+                    <h2 class="panel-title">Generation Log</h2>
+                    <div class="gen-log" id="gen-log">
+                        <div class="log-entry">Ready to generate...</div>
+                    </div>
+                </div>
+            </aside>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <span>Lights Out Puzzle Simulator</span>
+            <span class="footer-sep">·</span>
+            <span>GF(2) Gaussian Elimination Solver</span>
+            <span class="footer-sep">·</span>
+            <span>Procedural Generation Engine</span>
+        </footer>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
